@@ -1,37 +1,29 @@
-This code uses the "horizontal scanning" approach, and it’s known for being pretty efficient in practice. Here’s a detailed, point-wise breakdown of why your version runs fast (especially compared to some other methods):
+Step-by-step Explanation:
 
-1. Early Exit on Mismatch 🚪
+Check for Empty Input:
+If the list is empty, return "" right away—nothing to scan.
 
-The code trims the prefix as soon as a mismatch is found.
-If the prefix ever becomes an empty string, it returns immediately.
-This avoids unnecessary comparisons with the rest of the strings once you know there’s no common prefix.
+Assume the First String is the Prefix:
+Set the prefix as the first string in the list.
 
-2. No Nested Character-by-Character Loops 🔄
+Scan Horizontally Across All Strings:
+For each string after the first:
 
-Instead of comparing every character of every string with every other string, you only compare the prefix with the current string using startswith().
-startswith() is optimized in Python and often runs faster than manual character-by-character checks.
+Check if it starts with the current prefix.
+If yes, move to the next string.
+If no, chop off the last character from the prefix and check again.
+Keep chopping until the prefix matches the start of the string or becomes empty.
+Early Exit if Prefix is Empty:
+If the prefix ever becomes "", return "" immediately—no common prefix exists.
 
-3. Prefix Shrinks, Not Grows ✂️
+Return the Prefix:
+After checking all strings, whatever’s left in prefix is your answer.
 
-The prefix only gets shorter as you process more strings.
-This means each subsequent comparison is with a possibly smaller prefix, saving time as you go.
+Quick Example:
+For strs = ["interview", "internet", "internal"]:
 
-4. Efficient Built-in Functions 🏎️
-
-Python’s s.startswith(prefix) is implemented in C under the hood, making it much faster than a custom loop.
-Slicing strings (prefix = prefix[:-1]) is also fast and memory-efficient for small prefixes.
-
-5. Minimal Memory Usage 💾
-
-The code doesn’t use extra data structures—just a single prefix string.
-No need to store character arrays or intermediate results.
-
-6. Best-Case Scenario Optimization ✨
-
-If all strings share a long common prefix, you only check each string once, and the loop moves quickly.
-If the first character doesn’t match, you exit after just a few checks.
-
-7. Avoids Unnecessary Work 💤
-
-As soon as the prefix is empty or a mismatch is found, the function stops further checks.
-No wasted effort on the rest of the strings.
+Prefix = "interview"
+"internet" doesn’t start with "interview" → chop last char: "intervie" (no), "intervi" (no), ... until "inter" (yes)
+"internal" starts with "inter" → done!
+Final answer: "inter"
+Want to see this in code or try a dry run with a custom example?
